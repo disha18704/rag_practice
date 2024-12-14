@@ -27,6 +27,13 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 #     ]
 # )
 
+prompt = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(content="You are a helpful assistant. Provide detailed and relevant answers to the user's query."),
+        HumanMessage(content="{question}")
+    ]
+)
+
 # my streamlit framework
 st.title("Langchain Demo With LLama3.2 API")
 input_text = st.text_input("Search the topic you want")
@@ -40,6 +47,32 @@ llm = OllamaLLM(model = "llama3.2:latest")
 
 # chain = LLMChain(llm=llm)
 
+# if input_text:
+#     response = llm.invoke(input_text)
+#     st.write(response)
+
+
+# if input_text:
+#     # Use the prompt template to format the input
+#     formatted_prompt = prompt.format_messages(question=input_text)
+    
+#     # Generate a response using the LLM
+#     response = llm.invoke(formatted_prompt)
+    
+#     # Display the response
+#     st.write(response)
+
 if input_text:
-    response = llm.invoke(input_text)
+    # Manually construct the prompt
+    manual_prompt = (
+        "You are a helpful assistant. Provide detailed and relevant answers to the user's query.\n"
+        f"User: {input_text}"
+    )
+    
+    # Generate a response
+    response = llm.invoke(manual_prompt)
+    
+    # Display the response
     st.write(response)
+
+
